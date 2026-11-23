@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chá de Bebê do Lucas — Sorteio de Presentes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>👶 Chá de Bebê do Lucas</h1>
+    <p class="subtitulo">
+      Não vai poder vir? Sem problemas! Gire a roleta e descubra qual presente trazer para o Lucas.
+      Qualquer item da lista já é uma grande ajuda. 💙
+    </p>
+
+    <form id="form-sorteio">
+      <input type="text" id="nome" placeholder="Seu nome" required autocomplete="off" />
+      <button type="submit" id="btn-girar">Girar a Roleta 🎡</button>
+    </form>
+
+    <!-- Área da Roleta -->
+    <section id="roleta-container" class="roleta-container escondido">
+      <div class="ponteiro">▼</div>
+      <div class="roleta" id="roleta">
+        <!-- O JavaScript vai preencher as fatias aqui -->
+      </div>
+    </section>
+
+    <!-- Resultado e Endereço -->
+    <section id="resultado" class="resultado escondido">
+      <h2>O presente do Lucas é:</h2>
+      <p id="item-sorteado"></p>
+      <p class="aviso">Tire um print ou anote para não esquecer!</p>
+
+      <!-- Caixa de Endereço -->
+      <div class="endereco-entrega">
+        <h3>📦 Endereço para entrega</h3>
+        <p>
+          <strong>Rua:</strong> São Crispim, 57 - Casa 3 - Fundos<br>
+          <strong>Bairro:</strong> Jardim Seckler, São Paulo - SP<br>
+          <strong>CEP:</strong> 04242-030<br>
+          <strong>Entregar para:</strong> Jackeline ou Eraldo
+        </p>
+        <button type="button" id="btn-copiar-endereco" class="btn-copiar">📋 Copiar Endereço</button>
+      </div>
+    </section>
+
+    <section id="estoque" class="estoque">
+      <h2>Nossa listinha de desejos</h2>
+      <ul id="lista-estoque"></ul>
+    </section>
+
+    <!-- Botão para o papai -->
+    <div class="area-papai">
+      <button type="button" id="btn-painel" class="btn-link">🔒 Acesso do Papai</button>
+    </div>
+
+    <!-- Painel do Papai (Modal) -->
+    <div id="painel-modal" class="modal escondido">
+      <div class="modal-content">
+        
+        <!-- Tela de Senha -->
+        <div id="tela-senha">
+          <h2>Área Restrita</h2>
+          <p style="text-align: center; margin-bottom: 16px; font-size: 0.9rem;">Digite a senha para acessar:</p>
+          <input type="password" id="input-senha" placeholder="Senha" style="margin-bottom: 12px;" />
+          <button type="button" id="btn-entrar">Entrar</button>
+          <button type="button" id="btn-fechar-senha" class="reset" style="margin-top: 8px;">Voltar</button>
+        </div>
+
+        <!-- Tela da Lista -->
+        <div id="tela-lista" class="escondido">
+          <h2>Painel do Papai</h2>
+          <ul id="lista-participantes"></ul>
+          <button id="btn-fechar-painel" class="reset">Fechar Painel</button>
+          <button id="btn-reset" class="reset" style="margin-top: 8px;">Apagar todos os dados</button>
+        </div>
+
+      </div>
+    </div>
+
+  <script src="itens.js"></script>
+  <script src="sorteio.js"></script>
+</body>
+</html>
