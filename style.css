@@ -292,3 +292,43 @@ button:disabled {
 .escondido {
   display: none;
 }
+/* --- ENDEREÇO DE ENTREGA --- */
+.endereco-entrega {
+  margin-top: 20px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px dashed #90caf9;
+  text-align: left;
+}
+
+.endereco-entrega h3 {
+  font-size: 0.95rem;
+  color: #1565c0;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.endereco-entrega p {
+  font-size: 0.85rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.btn-copiar {
+  width: 100%;
+  padding: 10px;
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #1565c0;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-copiar:hover {
+  background: #1565c0;
+  color: #fff;
+}

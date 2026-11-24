@@ -31,7 +31,11 @@
     <section id="resultado" class="resultado escondido">
       <h2>O presente do Lucas é:</h2>
       <p id="item-sorteado"></p>
-      <p class="aviso">Tire um print ou anote para não esquecer!</p>
+      
+      <!-- Botão de PIX na área de resultado -->
+      <button type="button" id="btn-ir-para-pix" class="btn-copiar" style="margin-top: 12px; background: #4caf50; color: white; border-color: #4caf50;">Prefere enviar um PIX? 💸</button>
+
+      <p class="aviso" style="margin-top: 16px;">Tire um print ou anote para não esquecer!</p>
 
       <!-- Caixa de Endereço -->
       <div class="endereco-entrega">
@@ -46,6 +50,25 @@
       </div>
     </section>
 
+    <!-- Seção de PIX -->
+    <section id="secao-pix" class="estoque" style="display: none; margin-top: 32px; border-top: 1px solid #eee; padding-top: 24px;">
+      <h2>💸 Ou envie um PIX</h2>
+      <p style="font-size: 0.9rem; color: #555; text-align: center; margin-bottom: 16px;">
+        Se preferir não comprar o presente físico, você pode nos ajudar com qualquer valor via PIX.
+      </p>
+      
+      <div style="text-align: center;">
+        <!-- Certifique-se de que a imagem está na mesma pasta com este nome -->
+        <img src="qrcode-pix.png" alt="QR Code PIX" style="width: 200px; height: 200px; margin: 0 auto 16px; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        
+        <p style="font-size: 0.85rem; color: #333; margin-bottom: 8px;"><strong>Chave PIX (Aleatória):</strong></p>
+        <p id="chave-pix-texto" style="font-size: 0.9rem; color: #1565c0; font-weight: 600; margin-bottom: 16px; word-break: break-all;">a3406cf9-b134-4091-ad37-f62d21084ea6</p>
+        
+        <button type="button" id="btn-copiar-pix" class="btn-copiar" style="max-width: 300px; margin: 0 auto;">📋 Copiar Chave PIX</button>
+      </div>
+    </section>
+
+    <!-- Lista de Desejos -->
     <section id="estoque" class="estoque">
       <h2>Nossa listinha de desejos</h2>
       <ul id="lista-estoque"></ul>

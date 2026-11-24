@@ -1,5 +1,6 @@
 const CHAVE_STORAGE = "cha_bebe_sorteios_lucas";
 const SENHA_PAPAI = "lucas2024"; // Troque para a senha que você quiser
+const CHAVE_PIX = "a3406cf9-b134-4091-ad37-f62d21084ea6";
 
 let estado = carregarEstado();
 let girando = false;
@@ -75,32 +76,28 @@ function sortear() {
   }
 
   girando = true;
+
+  // Esconde o resultado e o PIX antes de girar
   document.getElementById("resultado").classList.add("escondido");
+  document.getElementById("secao-pix").style.display = "none";
+
   document.getElementById("roleta-container").classList.remove("escondido");
   document.getElementById("btn-girar").disabled = true;
   document.getElementById("btn-girar").textContent = "Girando...";
 
-  // Sorteia o item
   const indiceSorteado = Math.floor(Math.random() * ITENS.length);
   const itemSorteado = ITENS[indiceSorteado];
 
-  // Cálculo da rotação
   const roleta = document.getElementById("roleta");
   const tamanhoFatia = 360 / ITENS.length;
 
-  // O ponteiro fica no topo (0deg). Para o item X parar no topo:
-  // A fatia X vai de (X * tamanho) a ((X+1) * tamanho).
-  // O centro da fatia é (X * tamanho) + (tamanho / 2).
-  // Precisamos girar 360 - centro, mais algumas voltas completas.
   const centroFatia = indiceSorteado * tamanhoFatia + tamanhoFatia / 2;
-  const voltasExtras = 5 * 360; // 5 voltas completas para dar efeito
+  const voltasExtras = 5 * 360;
   const rotacaoFinal = voltasExtras + (360 - centroFatia);
 
-  // Aplica a animação
   roleta.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
   roleta.style.transform = `rotate(${rotacaoFinal}deg)`;
 
-  // Aguarda a animação terminar para mostrar o resultado
   setTimeout(() => {
     estado.sorteados.push({
       nome,
@@ -115,7 +112,7 @@ function sortear() {
     document.getElementById("btn-girar").disabled = false;
     document.getElementById("btn-girar").textContent = "Girar Novamente";
     nomeInput.value = "";
-  }, 4100); // 4.1 segundos (tempo da animação + margem)
+  }, 4100);
 }
 
 function mostrarResultado(item) {
@@ -136,30 +133,22 @@ function mostrarResultado(item) {
   secao.classList.remove("escondido");
 }
 
-function atualizarListaSugestoes() {
-  const lista = document.getElementById("lista-estoque");
-  lista.innerHTML = "";
-  ITENS.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item.nome;
-    lista.appendChild(li);
-  });
-}
-// --- COPIAR ENDEREÇO ---
-document.getElementById("btn-copiar-endereco").addEventListener("click", () => {
-  const textoEndereco = `Rua: São Crispim, 57 - Casa 3 - Fundos
-Bairro: Jardim Seckler, São Paulo - SP
-CEP: 04242-030
-Entregar para: Jackeline ou Eraldo`;
+// --- NOVO: EVENTOS DO PIX ---
+document.getElementById("btn-ir-para-pix").addEventListener("click", () => {
+  const secaoPix = document.getElementById("secao-pix");
+  secaoPix.style.display = "block"; // Mostra a seção
+  // Rola a tela suavemente até a seção do PIX
+  secaoPix.scrollIntoView({ behavior: "smooth", block: "center" });
+});
 
-  // Tenta usar a API moderna de clipboard
+document.getElementById("btn-copiar-pix").addEventListener("click", () => {
   if (navigator.clipboard) {
     navigator.clipboard
-      .writeText(textoEndereco)
+      .writeText(CHAVE_PIX)
       .then(() => {
-        const btn = document.getElementById("btn-copiar-endereco");
+        const btn = document.getElementById("btn-copiar-pix");
         const textoOriginal = btn.textContent;
-        btn.textContent = "✅ Copiado!";
+        btn.textContent = "✅ Chave Copiada!";
         btn.style.background = "#4caf50";
         btn.style.color = "#fff";
         btn.style.borderColor = "#4caf50";
@@ -171,16 +160,11 @@ Entregar para: Jackeline ou Eraldo`;
           btn.style.borderColor = "";
         }, 2000);
       })
-      .catch((err) => {
-        alert(
-          "Não foi possível copiar automaticamente. Selecione o texto manualmente.",
-        );
+      .catch(() => {
+        alert("Não foi possível copiar. Por favor, anote a chave manualmente.");
       });
   } else {
-    // Fallback para navegadores antigos
-    alert(
-      "Seu navegador não suporta cópia automática. Por favor, anote ou tire um print.",
-    );
+    alert("Seu navegador não suporta cópia automática.");
   }
 });
 // --- PAINEL DO PAPAI ---
