@@ -1,6 +1,6 @@
 const CHAVE_STORAGE = "cha_bebe_sorteios_lucas";
 const SENHA_PAPAI = "lucas2024"; // Troque para a senha que você quiser
-const CHAVE_PIX = "a3406cf9-b134-4091-ad37-f62d21084ea6";
+const CHAVE_PIX = "a3406cf9-b134-4091-ad37-f62d21084ea6"; // Sua chave PIX aleatória
 
 let estado = carregarEstado();
 let girando = false;
@@ -24,7 +24,6 @@ function desenharRoleta() {
   let gradiente = [];
   let cores = ["#e3f2fd", "#90caf9"]; // Azuis alternados
 
-  // Desenha as fatias coloridas
   ITENS.forEach((item, index) => {
     const cor = cores[index % 2];
     const inicio = index * tamanhoFatia;
@@ -33,24 +32,26 @@ function desenharRoleta() {
   });
 
   roleta.style.background = `conic-gradient(${gradiente.join(", ")})`;
+  roleta.innerHTML = "";
 
-  roleta.innerHTML = ""; // Limpa antes de adicionar os textos
-
-  // Adiciona os nomes abreviados
   ITENS.forEach((item, index) => {
     const span = document.createElement("span");
     span.className = "texto-fatia";
-
-    // Calcula o ângulo do centro da fatia
     const angulo = index * tamanhoFatia + tamanhoFatia / 2;
-
-    // Rotaciona o container do texto e empurra para a borda
     span.style.transform = `rotate(${angulo}deg) translateY(-110px)`;
-
-    // O texto em si é contra-rotacionado para ficar "de pé" e legível
     span.innerHTML = `<span style="transform: rotate(${-angulo}deg)">${item.abrev}</span>`;
-
     roleta.appendChild(span);
+  });
+}
+
+// --- LISTA DE SUGESTÕES ---
+function atualizarListaSugestoes() {
+  const lista = document.getElementById("lista-estoque");
+  lista.innerHTML = "";
+  ITENS.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item.nome;
+    lista.appendChild(li);
   });
 }
 
@@ -77,7 +78,7 @@ function sortear() {
 
   girando = true;
 
-  // Esconde o resultado e o PIX antes de girar
+  // Esconde resultados anteriores
   document.getElementById("resultado").classList.add("escondido");
   document.getElementById("secao-pix").style.display = "none";
 
@@ -95,9 +96,17 @@ function sortear() {
   const voltasExtras = 5 * 360;
   const rotacaoFinal = voltasExtras + (360 - centroFatia);
 
-  roleta.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
-  roleta.style.transform = `rotate(${rotacaoFinal}deg)`;
+  // FORÇA O NAVEGADOR A RENDERIZAR ANTES DE GIRAR (Correção da animação)
+  roleta.style.transition = "none";
+  roleta.style.transform = "rotate(0deg)";
 
+  setTimeout(() => {
+    roleta.style.transition =
+      "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+    roleta.style.transform = `rotate(${rotacaoFinal}deg)`;
+  }, 50);
+
+  // Aguarda a animação de 4 segundos terminar
   setTimeout(() => {
     estado.sorteados.push({
       nome,
@@ -133,11 +142,10 @@ function mostrarResultado(item) {
   secao.classList.remove("escondido");
 }
 
-// --- NOVO: EVENTOS DO PIX ---
+// --- PIX ---
 document.getElementById("btn-ir-para-pix").addEventListener("click", () => {
   const secaoPix = document.getElementById("secao-pix");
-  secaoPix.style.display = "block"; // Mostra a seção
-  // Rola a tela suavemente até a seção do PIX
+  secaoPix.style.display = "block";
   secaoPix.scrollIntoView({ behavior: "smooth", block: "center" });
 });
 
@@ -163,10 +171,42 @@ document.getElementById("btn-copiar-pix").addEventListener("click", () => {
       .catch(() => {
         alert("Não foi possível copiar. Por favor, anote a chave manualmente.");
       });
-  } else {
-    alert("Seu navegador não suporta cópia automática.");
   }
 });
+
+// --- COPIAR ENDEREÇO ---
+document.getElementById("btn-copiar-endereco").addEventListener("click", () => {
+  const textoEndereco = `Rua: São Crispim, 57 - Casa 3 - Fundos
+Bairro: Jardim Seckler, São Paulo - SP
+CEP: 04242-030
+Entregar para: Jackeline ou Eraldo`;
+
+  if (navigator.clipboard) {
+    navigator.clipboard
+      .writeText(textoEndereco)
+      .then(() => {
+        const btn = document.getElementById("btn-copiar-endereco");
+        const textoOriginal = btn.textContent;
+        btn.textContent = "✅ Copiado!";
+        btn.style.background = "#4caf50";
+        btn.style.color = "#fff";
+        btn.style.borderColor = "#4caf50";
+
+        setTimeout(() => {
+          btn.textContent = textoOriginal;
+          btn.style.background = "";
+          btn.style.color = "";
+          btn.style.borderColor = "";
+        }, 2000);
+      })
+      .catch(() => {
+        alert(
+          "Não foi possível copiar automaticamente. Selecione o texto manualmente.",
+        );
+      });
+  }
+});
+
 // --- PAINEL DO PAPAI ---
 function abrirPainel() {
   document.getElementById("painel-modal").classList.remove("escondido");
@@ -195,11 +235,9 @@ function renderizarListaParticipantes() {
   if (estado.sorteados.length === 0) {
     lista.innerHTML = "<li>Ninguém participou ainda.</li>";
   } else {
-    // Ordena por data (do mais recente para o mais antigo)
     const ordenados = [...estado.sorteados].sort(
       (a, b) => new Date(b.data) - new Date(a.data),
     );
-
     ordenados.forEach((s) => {
       const li = document.createElement("li");
       li.innerHTML = `<strong>${s.nome}</strong> tirou: ${s.item} <br><small>${s.data}</small>`;
@@ -207,12 +245,6 @@ function renderizarListaParticipantes() {
     });
   }
 }
-
-// --- EVENTOS ---
-document.getElementById("form-sorteio").addEventListener("submit", (e) => {
-  e.preventDefault();
-  sortear();
-});
 
 document.getElementById("btn-painel").addEventListener("click", abrirPainel);
 document.getElementById("btn-entrar").addEventListener("click", verificarSenha);
@@ -235,26 +267,20 @@ document.getElementById("btn-reset").addEventListener("click", () => {
     document.getElementById("painel-modal").classList.add("escondido");
     document.getElementById("resultado").classList.add("escondido");
     document.getElementById("roleta-container").classList.add("escondido");
+    document.getElementById("secao-pix").style.display = "none";
 
     const roleta = document.getElementById("roleta");
-    // Aplica a animação forçando o navegador a renderizar a posição inicial
     roleta.style.transition = "none";
     roleta.style.transform = "rotate(0deg)";
-
-    // O setTimeout de 10ms dá tempo do navegador entender que voltou pro zero
-    setTimeout(() => {
-      roleta.style.transition =
-        "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
-      roleta.style.transform = `rotate(${rotacaoFinal}deg)`;
-    }, 10);
-
-    setTimeout(() => {
-      roleta.style.transition =
-        "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
-    }, 50);
   }
 });
 
-// Inicialização
+// --- INICIALIZAÇÃO ---
+document.getElementById("form-sorteio").addEventListener("submit", (e) => {
+  e.preventDefault();
+  sortear();
+});
+
+// Executa ao carregar a página
 desenharRoleta();
 atualizarListaSugestoes();
