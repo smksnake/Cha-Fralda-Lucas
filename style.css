@@ -338,3 +338,31 @@ button:disabled {
   border-radius: 6px;
   border: 1px solid #eee;
 }
+/* --- CHUVA DE EMOJIS --- */
+.objeto-caindo {
+  position: fixed;
+  top: -50px; /* Começa escondido acima da tela */
+  z-index: -1; /* Fica atrás do cartão branco */
+  pointer-events: none; /* O usuário clica "através" do emoji */
+  animation-name: cair;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0.6; /* Um pouco transparente para não brigar com o fundo */
+}
+
+@keyframes cair {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg); /* Cai até o final da tela girando */
+    opacity: 0;
+  }
+}

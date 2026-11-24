@@ -14,7 +14,31 @@ function carregarEstado() {
 function salvarEstado() {
   localStorage.setItem(CHAVE_STORAGE, JSON.stringify(estado));
 }
+// --- CHUVA DE EMOJIS ---
+function iniciarChuvaDeEmojis() {
+  const container = document.getElementById("chuva-emojis");
+  const emojis = ["🎁", "🧸", "💙", "👶", "🍼", "🚼", "🎈", "🧸", "🩵", "🍼"];
 
+  // Cria 25 emojis
+  for (let i = 0; i < 25; i++) {
+    const span = document.createElement("span");
+    span.className = "objeto-caindo";
+    span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+    // Configurações aleatórias para cada emoji cair de um jeito diferente
+    const leftPos = Math.random() * 100; // Posição na tela (0 a 100%)
+    const duracao = Math.random() * 5 + 5; // Demora entre 5 e 10 segundos para cair
+    const delay = Math.random() * 5; // Começa a cair entre 0 e 5 segundos
+    const tamanho = Math.random() * 20 + 15; // Tamanho entre 15px e 35px
+
+    span.style.left = `${leftPos}vw`;
+    span.style.animationDuration = `${duracao}s`;
+    span.style.animationDelay = `${delay}s`;
+    span.style.fontSize = `${tamanho}px`;
+
+    container.appendChild(span);
+  }
+}
 // --- CONFIGURAÇÃO DA ROLETA ---
 function desenharRoleta() {
   const roleta = document.getElementById("roleta");
@@ -284,3 +308,4 @@ document.getElementById("form-sorteio").addEventListener("submit", (e) => {
 // Executa ao carregar a página
 desenharRoleta();
 atualizarListaSugestoes();
+iniciarChuvaDeEmojis();
