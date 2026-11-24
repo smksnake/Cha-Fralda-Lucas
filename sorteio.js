@@ -237,8 +237,16 @@ document.getElementById("btn-reset").addEventListener("click", () => {
     document.getElementById("roleta-container").classList.add("escondido");
 
     const roleta = document.getElementById("roleta");
+    // Aplica a animação forçando o navegador a renderizar a posição inicial
     roleta.style.transition = "none";
     roleta.style.transform = "rotate(0deg)";
+
+    // O setTimeout de 10ms dá tempo do navegador entender que voltou pro zero
+    setTimeout(() => {
+      roleta.style.transition =
+        "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+      roleta.style.transform = `rotate(${rotacaoFinal}deg)`;
+    }, 10);
 
     setTimeout(() => {
       roleta.style.transition =
