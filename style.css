@@ -366,3 +366,18 @@ button:disabled {
     opacity: 0;
   }
 }
+
+/* --- RODAPÉ COM URSINHO --- */
+.rodape-urso {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: -32px; /* Puxa a imagem um pouquinho para baixo, colando na borda */
+}
+
+.rodape-urso img {
+  max-width: 100%; /* Garante que a imagem não vai vazar do cartão no celular */
+  width: 400px; /* Tamanho máximo da imagem no computador */
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Uma sombrinha bem de leve */
+}
